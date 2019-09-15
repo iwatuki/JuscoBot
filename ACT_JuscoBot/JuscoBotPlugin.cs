@@ -13,15 +13,15 @@ using System.Reflection;
 using System.IO;
 using System.Xml;
 using Discord.WebSocket;
+using GoogleAPI;
 
-
-namespace ACT_DiscordBot {
-	public partial class DiscordPlugin : UserControl, IActPluginV1 {
+namespace ACT_JuscoBot {
+	public partial class JuscoBotPlugin : UserControl, IActPluginV1 {
 		Label labelStatus;
-		string settingFilePath;
+
 		SettingsSerializer xmlSetting;
 
-		public DiscordPlugin() {
+		public JuscoBotPlugin() {
 			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 			InitializeComponent();
 		}
@@ -31,15 +31,37 @@ namespace ACT_DiscordBot {
 			pluginScreenSpace.Text = "JuscoBot";
 			Dock = DockStyle.Fill;
 
-			settingFilePath = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\ACT_JuscoBot.xml");
 			xmlSetting = new SettingsSerializer(this);
 			LoadSettings();
 
 			DiscordClient.BotReady += BotReady;
 			DiscordClient.Log += Log;
+			GoogleDriveAPI.Log += Log;
 
 			labelStatus = pluginStatusText;
 			labelStatus.Text = "Plugin Started";
+		}
+
+		public async void DeInitPlugin() {
+			SaveSettings();
+			try {
+				await DiscordClient.deInIt();
+				DiscordClient.BotReady -= BotReady;
+
+				DiscordClient.Log -= Log;
+				GoogleDriveAPI.Log -= Log;
+
+				ActGlobals.oFormActMain.OnCombatEnd -= OFormActMain_OnCombatEnd;
+			} catch (Exception ex) {
+				ActGlobals.oFormActMain.WriteExceptionLog(ex, "Error with DeInit of Discord Plugin.");
+			}
+			labelStatus.Text = "Plugin Exited";
+		}
+
+		public void InitForDebugUI() {
+			// DebugUIからだと InitPlugin() が呼ばれないためDebugUI起動時に初期化したい処理をここに記述
+			DiscordClient.Log += Log;
+			GoogleDriveAPI.Log += Log;
 		}
 
 		private void Log(string message) {
@@ -52,19 +74,6 @@ namespace ACT_DiscordBot {
 		private void BotReady() {
 			btnJoin.Enabled = true;
 			populateServerAndChannels();
-		}
-
-		public async void DeInitPlugin() {
-			SaveSettings();
-			try {
-				await DiscordClient.deInIt();
-				DiscordClient.BotReady -= BotReady;
-				DiscordClient.Log -= Log;
-				ActGlobals.oFormActMain.OnCombatEnd -= OFormActMain_OnCombatEnd;
-			} catch (Exception ex) {
-				ActGlobals.oFormActMain.WriteExceptionLog(ex, "Error with DeInit of Discord Plugin.");
-			}
-			labelStatus.Text = "Plugin Exited";
 		}
 
 		private void BtnConnect_Click(object sender, EventArgs e) {
@@ -194,14 +203,14 @@ namespace ACT_DiscordBot {
 		}
 
 		private void LoadSettings() {
-			xmlSetting.AddControlSetting(textToken.Name, textToken);
+			xmlSetting.AddControlSetting(textDiscordBotToken.Name, textDiscordBotToken);
 			xmlSetting.AddControlSetting(chkAutoConnect.Name, chkAutoConnect);
 			xmlSetting.AddControlSetting(cmbServer.Name, cmbServer);
 			xmlSetting.AddControlSetting(cmbTextChannel.Name, cmbTextChannel);
 			xmlSetting.AddControlSetting(cmbVoiceChannel.Text, cmbVoiceChannel);
 
-			if (File.Exists(settingFilePath)) {
-				using (FileStream fs = new FileStream(settingFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
+			if (File.Exists(PathHelper.JuscoBotSettingFile)) {
+				using (FileStream fs = new FileStream(PathHelper.JuscoBotSettingFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
 					using (XmlTextReader xReader = new XmlTextReader(fs)) {
 						try {
 							while (xReader.Read())
@@ -219,7 +228,8 @@ namespace ACT_DiscordBot {
 
 		public bool SaveSettings() {
 			try {
-				using (FileStream fs = new FileStream(settingFilePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite)) {
+				if (!Directory.Exists(PathHelper.JuscoBotSettingFolderPath)) Directory.CreateDirectory(PathHelper.JuscoBotSettingFolderPath);
+				using (FileStream fs = new FileStream(PathHelper.JuscoBotSettingFile, FileMode.Create, FileAccess.Write, FileShare.ReadWrite)) {
 					XmlTextWriter xWriter = new XmlTextWriter(fs, Encoding.UTF8);
 					xWriter.Formatting = Formatting.Indented;
 					xWriter.Indentation = 1;
@@ -239,6 +249,43 @@ namespace ACT_DiscordBot {
 				return false;
 			}
 			return true;
+		}
+
+		private async void buttonAuth_Click(object sender, EventArgs e) {
+			if (!File.Exists(textCredPath.Text)) {
+				Log("Unselected JsonFile");
+				return;
+			}
+			var result = await GoogleDriveAPI.Authentication(textCredPath.Text, PathHelper.GoogleDriveTokenPath);
+			Log("Google Drive Auth - " + result);
+		}
+
+		private async void button1_Click(object sender, EventArgs e) {
+			if (!File.Exists(textCredPath.Text)) {
+				Log("Unselected JsonFile");
+				return;
+			}
+
+			var result = await GoogleDriveAPI.Authentication(textCredPath.Text, PathHelper.GoogleDriveTokenPath);
+			Log("Google Drive Auth result (" + result + ")");
+			var uploadResult = await GoogleDriveAPI.UploadFile("test.txt");
+			Log("Upload Result = " + uploadResult);
+		}
+
+		private void button2_Click(object sender, EventArgs e) {
+			OpenFileDialog fd = new OpenFileDialog();
+			fd.Filter = "jsonファイル(*.json)|*json";
+			fd.Title = "開くファイルを選択してください";
+			fd.InitialDirectory = PathHelper.AppFolderPath;
+			if (fd.ShowDialog() == DialogResult.OK) {
+				textCredPath.Text = fd.FileName;
+			}
+		}
+
+		private void button3_Click(object sender, EventArgs e) {
+			Log("appdatapath = " + PathHelper.ActDataFolderPath);
+			Log("HojorinFolderPath = " + PathHelper.HojorinFolderPath);
+			Log("AppFolderPath = " + PathHelper.AppFolderPath);
 		}
 
 	}

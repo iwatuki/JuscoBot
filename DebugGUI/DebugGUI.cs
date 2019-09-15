@@ -13,5 +13,9 @@ namespace DebugGUI {
 		public DebugGUI() {
 			InitializeComponent();
 		}
+
+		private void juscoBotPlugin1_Load(object sender, EventArgs e) {
+			juscoBotPlugin1.InitForDebugUI();
+		}
 	}
 }

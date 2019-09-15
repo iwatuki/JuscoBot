@@ -219,7 +219,7 @@ namespace DiscordAPI
 		}
 
 		public static async void SendMessage(ISocketMessageChannel channel, string message) {
-			await channel.SendMessageAsync(message);
+			var result = await channel.SendMessageAsync(message);
 		}
 	}
 }

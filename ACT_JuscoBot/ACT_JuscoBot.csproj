@@ -48,23 +48,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiscordPlugin.cs">
+    <Compile Include="EnvironmentHelper.cs" />
+    <Compile Include="JuscoBotPlugin.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DiscordPlugin.Designer.cs">
-      <DependentUpon>DiscordPlugin.cs</DependentUpon>
+    <Compile Include="JuscoBotPlugin.Designer.cs">
+      <DependentUpon>JuscoBotPlugin.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DiscordPlugin.resx">
-      <DependentUpon>DiscordPlugin.cs</DependentUpon>
+    <EmbeddedResource Include="JuscoBotPlugin.resx">
+      <DependentUpon>JuscoBotPlugin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DiscordPlugin\DiscordAPI.csproj">
       <Project>{e96d7278-f362-4587-b7ff-45069a273ffd}</Project>
       <Name>DiscordAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GoogleAPI\GoogleAPI.csproj">
+      <Project>{70fa0984-a546-4bd8-adf6-01654c396914}</Project>
+      <Name>GoogleAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

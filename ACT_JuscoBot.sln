@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugGUI", "DebugGUI\DebugG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACT_JuscoBot", "ACT_JuscoBot\ACT_JuscoBot.csproj", "{8993E0E3-942D-4CDA-B8B6-4561BC8F8F97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleAPI", "GoogleAPI\GoogleAPI.csproj", "{70FA0984-A546-4BD8-ADF6-01654C396914}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8993E0E3-942D-4CDA-B8B6-4561BC8F8F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8993E0E3-942D-4CDA-B8B6-4561BC8F8F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8993E0E3-942D-4CDA-B8B6-4561BC8F8F97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70FA0984-A546-4BD8-ADF6-01654C396914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70FA0984-A546-4BD8-ADF6-01654C396914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70FA0984-A546-4BD8-ADF6-01654C396914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70FA0984-A546-4BD8-ADF6-01654C396914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
