@@ -25,7 +25,8 @@ See the wiki
 [Google.APIs](https://www.nuget.org/packages/Google.Apis/)
 
 
-まだ実際には使ってないけど Discord対応を想定のため
+
+↓ まだ実際には使ってないけど Discord対応を想定のため
 
 [Discord.Net](https://github.com/discord-net/Discord.Net)
 
