@@ -175,13 +175,12 @@
 			// checkBox2
 			// 
 			this.checkBox2.AutoSize = true;
-			this.checkBox2.Checked = true;
-			this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBox2.Enabled = false;
 			this.checkBox2.Location = new System.Drawing.Point(383, 10);
 			this.checkBox2.Name = "checkBox2";
-			this.checkBox2.Size = new System.Drawing.Size(213, 16);
+			this.checkBox2.Size = new System.Drawing.Size(261, 16);
 			this.checkBox2.TabIndex = 69;
-			this.checkBox2.Text = "起動時にバックアップが必要かチェックする";
+			this.checkBox2.Text = "起動時にバックアップが必要かチェックする (未実装)";
 			this.checkBox2.UseVisualStyleBackColor = true;
 			// 
 			// listBackup
