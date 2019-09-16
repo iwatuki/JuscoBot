@@ -15,7 +15,11 @@ namespace DebugGUI {
 		}
 
 		private void juscoBotPlugin1_Load(object sender, EventArgs e) {
-			juscoBotPlugin1.InitForDebugUI();
+			juscoBotPlugin1.Init();
+		}
+
+		private void DebugGUI_FormClosing(object sender, FormClosingEventArgs e) {
+			juscoBotPlugin1.DeInit();
 		}
 	}
 }

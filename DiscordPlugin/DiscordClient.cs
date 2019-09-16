@@ -23,7 +23,7 @@ namespace DiscordAPI
 		public delegate void BotLoaded();
 		public static BotLoaded BotReady;
 
-		public delegate void BotMessage(string message);
+		public delegate void BotMessage(string message, bool repeat = false);
 		public static BotMessage Log;
 
 		public static async void Init(string token) {

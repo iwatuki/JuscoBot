@@ -31,9 +31,9 @@
 			this.juscoBotPlugin1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.juscoBotPlugin1.Location = new System.Drawing.Point(4, 7);
+			this.juscoBotPlugin1.Location = new System.Drawing.Point(12, 12);
 			this.juscoBotPlugin1.Name = "juscoBotPlugin1";
-			this.juscoBotPlugin1.Size = new System.Drawing.Size(820, 533);
+			this.juscoBotPlugin1.Size = new System.Drawing.Size(784, 533);
 			this.juscoBotPlugin1.TabIndex = 0;
 			this.juscoBotPlugin1.Load += new System.EventHandler(this.juscoBotPlugin1_Load);
 			// 
@@ -45,6 +45,7 @@
 			this.Controls.Add(this.juscoBotPlugin1);
 			this.Name = "DebugGUI";
 			this.Text = "Form1";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DebugGUI_FormClosing);
 			this.ResumeLayout(false);
 
 		}
