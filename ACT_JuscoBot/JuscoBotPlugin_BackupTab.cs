@@ -83,9 +83,13 @@ namespace ACT_JuscoBot {
 		/// </summary>
 		/// <param name="paths"></param>
 		private async void StartBackupFile() {
-			TabPageBackup.Enabled = false;
-			var infos = getGDriveInfos();
-			var files = await GoogleDriveAPI.SyncFiles(FOLDER_NAME, infos);
+			try {
+				TabPageBackup.Enabled = false;
+				var infos = getGDriveInfos();
+				var files = await GoogleDriveAPI.SyncFiles(FOLDER_NAME, infos);
+			} catch {
+				Log("***** バックアップエラー 終了 *****");
+			}
 			TabPageBackup.Enabled = true;
 		}
 
@@ -95,11 +99,14 @@ namespace ACT_JuscoBot {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private async void buttonBackupCheck_Click(object sender, EventArgs e) {
-			TabPageBackup.Enabled = false;
-			var infos = getGDriveInfos();
-			var folder = await GoogleDriveAPI.GetFolderIfNotiongCreate(FOLDER_NAME);
-			var result = await GoogleDriveAPI.FileCheck(folder, infos);
-			Log("ファイル更新あり");
+			try {
+				TabPageBackup.Enabled = false;
+				var infos = getGDriveInfos();
+				var needSync = await GoogleDriveAPI.SyncFiles(FOLDER_NAME, infos, true);
+				Log("ファイル更新" + ((needSync) ? "あり" : "なし"));
+			} catch {
+				Log("***** バックアップエラー 終了 *****");
+			}
 			TabPageBackup.Enabled = true;
 		}
 

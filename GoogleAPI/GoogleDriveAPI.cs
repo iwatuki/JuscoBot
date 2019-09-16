@@ -50,13 +50,22 @@ namespace GoogleAPI {
 			}
 		}
 
-		public static async Task<List<File>> SyncFiles(string rootFolderName, List<GDriveFileInfo> infos) {
-			Log.Invoke("***** バックアップ開始 *****");
+		public static async Task<bool> SyncFiles(string rootFolderName, List<GDriveFileInfo> infos, bool check = false) {
+			if(!check)
+				Log.Invoke("***** バックアップ開始 *****");
+			else
+				Log.Invoke("***** チェック開始 *****");
+
 			// ルートフォルダ取得
 			var rootFolder = await GetFolderIfNotiongCreate(rootFolderName);
 
 			// ファイルチェック
 			var needSync = await FileCheck(rootFolder, infos);
+
+			if (check) {
+				Log.Invoke("***** チェック終了 *****");
+				return needSync;
+			}
 
 			// ファイルアップロード
 			var newFiles = new List<File>();
@@ -66,7 +75,7 @@ namespace GoogleAPI {
 				var newFolder = await CreateFolder(DateTime.Now.ToString("yyyyMMddHHmm"), rootFolder.Id);
 				foreach (var info in infos) {
 					var file = await UploadFile(info.filePath, newFolder.Id);
-					if (file == null) return null; // アップロードエラーのため中断
+					if (file == null) return false; // アップロードエラーのため中断
 					newFiles.Add(file);
 					Log.Invoke($"ファイルアップロード中 ({ newFiles.Count } / { infos.Count })", true);
 				}
@@ -74,7 +83,7 @@ namespace GoogleAPI {
 				Log.Invoke("変更されたファイルなし");
 			}
 			Log.Invoke("***** バックアップ終了 *****");
-			return newFiles;
+			return true;
 		}
 
 		public static async Task<File> GetFolderIfNotiongCreate(string folderName) {

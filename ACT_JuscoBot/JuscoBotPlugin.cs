@@ -81,6 +81,7 @@ namespace ACT_JuscoBot {
 			} else {
 				logList.Items[logList.Items.Count - 1] = new ListViewItem(rows);
 			}
+			logList.EnsureVisible(logList.Items.Count - 1);
 		}
 
 		private void OFormActMain_OnCombatEnd(bool isImport, CombatToggleEventArgs encounterInfo) {
