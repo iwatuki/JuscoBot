@@ -1,5 +1,15 @@
 # JuscoBot
-JuscoBot
+Actの設定をGoogleDriveにバックアップするためのソフトです。
+
+[v0.0.1]
+・とりあえず設定ファイルをアップロードするのみ対応
+
+・ダウンロードはまだ未対応なので、自分でGoogleDrive行って手動で落としてくる必要あり
+
+・ファイルの更新判定が超ザル
+
+・バックアップに選べるフォルダが固定なので Hojorin 以外で使ってるプラグインで
+  かつ想定していないフォルダに設定ファイルが保存されるタイプのプラグインはバックアップされません
 
 # Setup
 
@@ -15,4 +25,4 @@ See the wiki
 
 [Google.Apis.Drive.v3](https://www.nuget.org/packages/Google.Apis.Drive.v3/)
 
-[Google.APIs](https://www.nuget.org/packages/Google.Apis/) 不要か？
+[Google.APIs](https://www.nuget.org/packages/Google.Apis/)
